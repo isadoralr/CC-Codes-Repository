@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>2</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>GHDL</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>controlador</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>req:4,reset,clock</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>library ieee;
+use ieee.std_logic_1164.all;
+entity controlador is
+    port (
+    req : in std_logic_vector (3 downto 0);
+    aut : out std_logic_vector (3 downto 0);
+    reset : in std_logic;
+    clock : in std_logic
+    );
+end entity controlador;
+architecture comport_controlador of controlador is
+    TYPE Tipo_estado IS (inicio, zero, um, dois, tres);
+    signal atual: Tipo_estado;
+    begin
+        process(clock, reset)
+        begin
+            if reset = &apos;1&apos; then
+                atual &lt;= inicio;
+            elsif (clock&apos;event and clock = &apos;1&apos;) then
+                case atual is
+                    when inicio =&gt;
+                        if(req(0)=&apos;1&apos;) then
+                            atual &lt;= zero;
+                        elsif (req(1)=&apos;1&apos;) then
+                            atual &lt;= um;
+                        elsif (req(2)=&apos;1&apos;) then
+                            atual &lt;= dois;
+                        elsif (req(3)=&apos;1&apos;) then
+                            atual &lt;= tres;
+                        end if;
+                    when zero =&gt;
+                        if(req(0)=&apos;0&apos;) then 
+                            atual&lt;= inicio;
+                        end if;
+                    when um =&gt;
+                        if(req(1)=&apos;0&apos;) then 
+                            atual&lt;= inicio;
+                        end if;
+                    when dois =&gt;
+                        if(req(2)=&apos;0&apos;) then 
+                            atual&lt;= inicio;
+                        end if;
+                    when tres =&gt;
+                        if(req(3)=&apos;0&apos;) then 
+                            atual&lt;= inicio;
+                        end if;
+                end case;
+            end if;
+        end process;
+        process(atual)
+        begin
+            case atual is
+                when inicio =&gt;
+                    aut &lt;=&quot;0000&quot;;
+                when zero =&gt;
+                    aut(0)&lt;=&apos;1&apos;;
+                when um =&gt;
+                    aut(1)&lt;=&apos;1&apos;;
+                when dois =&gt;
+                    aut(2)&lt;=&apos;1&apos;;
+                when tres =&gt;
+                    aut(3)&lt;=&apos;1&apos;;
+                when others =&gt;
+                    aut &lt;=&quot;0000&quot;;
+            end case;
+        end process;
+end comport_controlador;</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>aut:4</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-1020" y="1160"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>1,1,1,1</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>4</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-1260" y="1160"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes/>
+      <pos x="-1340" y="1160"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes/>
+      <pos x="-1340" y="1220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes/>
+      <pos x="-1340" y="1280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>DipSwitch</elementName>
+      <elementAttributes/>
+      <pos x="-1340" y="1460"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>rotation</string>
+          <rotation rotation="3"/>
+        </entry>
+        <entry>
+          <string>Input Splitting</string>
+          <string>4</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>1,1,1,1</string>
+        </entry>
+      </elementAttributes>
+      <pos x="-840" y="1180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>LED</elementName>
+      <elementAttributes/>
+      <pos x="-700" y="1240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>LED</elementName>
+      <elementAttributes/>
+      <pos x="-700" y="1280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>LED</elementName>
+      <elementAttributes/>
+      <pos x="-700" y="1320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Clock</elementName>
+      <elementAttributes/>
+      <pos x="-1340" y="1500"/>
+    </visualElement>
+    <visualElement>
+      <elementName>LED</elementName>
+      <elementAttributes/>
+      <pos x="-700" y="1360"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes/>
+      <pos x="-1340" y="1340"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="-1340" y="1280"/>
+      <p2 x="-1280" y="1280"/>
+    </wire>
+    <wire>
+      <p1 x="-740" y="1280"/>
+      <p2 x="-700" y="1280"/>
+    </wire>
+    <wire>
+      <p1 x="-880" y="1280"/>
+      <p2 x="-760" y="1280"/>
+    </wire>
+    <wire>
+      <p1 x="-900" y="1360"/>
+      <p2 x="-700" y="1360"/>
+    </wire>
+    <wire>
+      <p1 x="-1280" y="1200"/>
+      <p2 x="-1260" y="1200"/>
+    </wire>
+    <wire>
+      <p1 x="-1180" y="1200"/>
+      <p2 x="-1020" y="1200"/>
+    </wire>
+    <wire>
+      <p1 x="-1340" y="1220"/>
+      <p2 x="-1320" y="1220"/>
+    </wire>
+    <wire>
+      <p1 x="-1340" y="1460"/>
+      <p2 x="-1220" y="1460"/>
+    </wire>
+    <wire>
+      <p1 x="-1240" y="1160"/>
+      <p2 x="-1020" y="1160"/>
+    </wire>
+    <wire>
+      <p1 x="-1340" y="1160"/>
+      <p2 x="-1260" y="1160"/>
+    </wire>
+    <wire>
+      <p1 x="-840" y="1240"/>
+      <p2 x="-700" y="1240"/>
+    </wire>
+    <wire>
+      <p1 x="-760" y="1320"/>
+      <p2 x="-700" y="1320"/>
+    </wire>
+    <wire>
+      <p1 x="-1340" y="1500"/>
+      <p2 x="-1180" y="1500"/>
+    </wire>
+    <wire>
+      <p1 x="-1320" y="1180"/>
+      <p2 x="-1260" y="1180"/>
+    </wire>
+    <wire>
+      <p1 x="-1220" y="1180"/>
+      <p2 x="-1020" y="1180"/>
+    </wire>
+    <wire>
+      <p1 x="-960" y="1180"/>
+      <p2 x="-840" y="1180"/>
+    </wire>
+    <wire>
+      <p1 x="-860" y="1260"/>
+      <p2 x="-740" y="1260"/>
+    </wire>
+    <wire>
+      <p1 x="-1340" y="1340"/>
+      <p2 x="-1260" y="1340"/>
+    </wire>
+    <wire>
+      <p1 x="-1220" y="1180"/>
+      <p2 x="-1220" y="1460"/>
+    </wire>
+    <wire>
+      <p1 x="-900" y="1200"/>
+      <p2 x="-900" y="1360"/>
+    </wire>
+    <wire>
+      <p1 x="-740" y="1260"/>
+      <p2 x="-740" y="1280"/>
+    </wire>
+    <wire>
+      <p1 x="-840" y="1200"/>
+      <p2 x="-840" y="1240"/>
+    </wire>
+    <wire>
+      <p1 x="-760" y="1280"/>
+      <p2 x="-760" y="1320"/>
+    </wire>
+    <wire>
+      <p1 x="-1320" y="1180"/>
+      <p2 x="-1320" y="1220"/>
+    </wire>
+    <wire>
+      <p1 x="-860" y="1200"/>
+      <p2 x="-860" y="1260"/>
+    </wire>
+    <wire>
+      <p1 x="-1180" y="1200"/>
+      <p2 x="-1180" y="1500"/>
+    </wire>
+    <wire>
+      <p1 x="-1260" y="1220"/>
+      <p2 x="-1260" y="1340"/>
+    </wire>
+    <wire>
+      <p1 x="-1280" y="1200"/>
+      <p2 x="-1280" y="1280"/>
+    </wire>
+    <wire>
+      <p1 x="-880" y="1200"/>
+      <p2 x="-880" y="1280"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>
